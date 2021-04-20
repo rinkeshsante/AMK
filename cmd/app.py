@@ -1,12 +1,17 @@
+import serial
+port = '/dev/ttyS0'
+ard = serial.Serial(port, 9600, timeout=5)
+
+
 def readSerial(serial_obj=None):
-    s = 'random string'
-    return s
+    msg = ard.read(ard.inWaiting())
+    return msg
 
 
 def writeSerial(s, serial_obj=None):
+    ard.write(setTemp1)
+    time.sleep(6)
     # com with serial
-    res = 'res'
-    return res
 
 
 def SolveCommand(s):
@@ -18,14 +23,9 @@ def SolveCommand(s):
     return cmd_no, data
 
 
-# print(SolveCommand(input('enter command :')))
-
-
 def CreateCommand(no, data=''):
     return 'amk#'+str(no)+'@'+str(data)+'!'
 
-
-# print(CreateCommand(9, 'ok'))
 
 while True:
     op = '''-------------------------------------
@@ -35,39 +35,59 @@ while True:
     3: getPWM
     4: setPWM
     5: listen
-    6: send
     '''
     print(op)
 
     c = int(input('Enter choice : '))
 
     if c == 0:
-        break
+        # set sql
+        sql = input('enter sql value')
+        # -- validate sql value here
+        cmd = CreateCommand(3, sql)
+        writeSerial(cmd)
+        res = readSerial()
+        no, data = SolveCommand(res)
+
+        if no == '4':
+            print('setted to :', data)
+        else:
+            print('error in set sql -->', data)
 
     elif c == 1:
-        pass
+        # auto sql
+        cmd = CreateCommand(1)
+        writeSerial(cmd)
+        res = readSerial()
+        no, data = SolveCommand(res)
+
+        if no == '2':
+            print('auto sql  :', data)
+        else:
+            print('error in auto sql -->', data)
 
     elif c == 2:
-        pass
+        # get pwm
+        cmd = CreateCommand(8)
+        writeSerial(cmd)
+        res = readSerial()
+        no, data = SolveCommand(res)
+
+        if no == '9':
+            print('setted to :', data)
+        else:
+            print('error in getpwm -->', data)
 
     elif c == 3:
-        pass
+        # set pwm
+        # not defined yet
 
     elif c == 4:
         pass
 
     elif c == 5:
-        cmd = readSerial()
-        no, data = SolveCommand(cmd)
-        if no == 5:  # check cmd from hardware
-            print('cmd error')
-        print(data)
-
-    elif c == 6:
-        msg = input('enter message : ')
-        cmd = CreateCommand(4, msg)  # check cmd from hardware
-        op = writeSerial(cmd)
-        print('op :', op)
+        res = readSerial()
+        print(res)
 
     else:
         print('invalid command')

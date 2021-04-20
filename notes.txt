@@ -1,0 +1,66 @@
+AUTOMATIC MORSE KEYER
+
+
+Preamble : AMK
+# - Command Number
+@ - start of data (if any)
+! - end of command
+
+FORMAT : PREAMBLE + "#" + CMD ID + "@" + DATA + "!"
+
+
+>> List of Commands:
+
+> autoSQL Request   
+	CMD ID	:1 
+	DATA	: N/A
+
+AMK#1!
+
+> autoSQL Response
+	CMD ID	:2
+	DATA	:XXXX (4 DIGIT NUMBER)
+
+AMK#2@0020!
+
+> setSQL Request
+	CMD ID	:3 
+	DATA	:XXXX (4 digit Number)
+
+AMK#3@0020!
+
+> setSQL Response
+	CMD ID	:4 
+	DATA	: N/A
+
+AMK#4!
+
+> morseRX
+	CMD ID	:5
+	DATA	: DATA (ALPHANUMERIC)
+
+AMK#5@HELLO WORLD!
+
+> morseTx Request
+	CMD ID	:6
+	DATA	: DATA (ALPHANUMERIC)
+
+AMK#6@HELLO WORLD!
+
+> morseTx Response
+	CMD ID	:7
+	DATA	: N/A
+
+AMK#7!
+
+> getWPM Request
+	CMD ID	:8
+	DATA	: N/A
+
+AMK#8!
+
+> getWPM Response
+	CMD ID	:9
+	DATA	: XX (2 DIGIT)
+
+AMK#9@40!
